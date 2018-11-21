@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="off" monitorInterval="1800">
+
+    <properties>
+        <!--<property name="log_home">${sys:catalina.home}/logs</property>-->
+        <!--<property name="log_home">/data/jars/website/logs</property>-->
+        <property name="log_home">./logs</property>
+        <!--<property name="log_home">F:\workspace\QM-PRO\website-backend\logs</property>-->
+        <property name="system-msg">${log_home}/system.log</property>
+        <property name="controller-msg">${log_home}/controller.log</property>
+        <property name="service-msg">${log_home}/service.log</property>
+        <property name="rolling-file-system">${log_home}/system.%d{yyyy-MM-dd}.log</property>
+        <property name="rolling-file-controller">${log_home}/controller.%d{yyyy-MM-dd}.log</property>
+        <property name="rolling-file-service">${log_home}/service.%d{yyyy-MM-dd}.log</property>
+    </properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="ACCEPT"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+        <RollingFile name="appender-system-msg" filename="${system-msg}" filePattern="${rolling-file-system}" append="true">
+            <Filters>
+                <ThresholdFilter level="info" onMatch="NEUTRAL" onMismatch="ACCEPT"/>
+            </Filters>
+            <PatternLayout>
+                <Pattern>%d %-5p (%F:%L) - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="appender-service-msg" filename="${service-msg}" filePattern="${rolling-file-service}" append="true">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>%m\t%d%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="appender-controller-msg" filename="${controller-msg}" filePattern="${rolling-file-controller}" append="true">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>%m\t%d%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- 3rdparty Loggers -->
+        <logger name="org.springframework.core" level="info"></logger>
+        <logger name="org.springframework.data" level="error"></logger>
+        <logger name="org.springframework.security" level="error"></logger>
+        <logger name="org.springframework.beans" level="info"></logger>
+        <logger name="org.springframework.context" level="info"></logger>
+        <logger name="org.springframework.web" level="info"></logger>
+
+        <AsyncLogger name="com.hw.springbootrestful" level="error" additivity="false"  includeLocation="true">
+            <AppenderRef ref="appender-system-msg" />
+        </AsyncLogger>
+        <AsyncLogger name="com.hw.springbootrestful.service" level="info" additivity="false"  includeLocation="true">
+            <AppenderRef ref="appender-service-msg" />
+        </AsyncLogger>
+        <AsyncLogger name="com.hw.springbootrestful.web.controller" level="info" additivity="false"  includeLocation="true">
+            <AppenderRef ref="appender-controller-msg" />
+        </AsyncLogger>
+        <Root level="error">
+            <AppenderRef ref="console" />
+        </Root>
+
+    </Loggers>
+
+</Configuration>

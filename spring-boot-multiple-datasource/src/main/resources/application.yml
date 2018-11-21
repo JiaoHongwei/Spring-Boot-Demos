@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    # 第一个数据源 sqlserver
+    primary:
+      username: root
+      password: root
+      jdbc-url: jdbc:sqlserver://localhost:1300;DatabaseName=test
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    # 第二个数据源 mysql
+    secondary:
+      username: root
+      password: root
+      jdbc-url: jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&useSSL=false
+      driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    # 第一个数据源 配置
+    primary:
+      show-sql: false
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          dialect: com.hw.springbootmultipledatasource.config.SqlServer2008Dialect
+
+    secondary:
+      show-sql: true
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+          implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL5InnoDBDialect

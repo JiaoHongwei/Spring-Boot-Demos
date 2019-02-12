@@ -87,7 +87,7 @@ public class RedisDistributedLock {
         Object obj = null;
         try {
             obj = redisTemplate.execute((RedisCallback) redisConnection -> {
-                FastJsonRedisSerializer serializer = new FastJsonRedisSerializer(String.class);
+                FastJsonRedisSerializer<String> serializer = new FastJsonRedisSerializer<>(String.class);
                 byte[] data = redisConnection.get(serializer.serialize(key));
                 redisConnection.close();
                 if (data == null) {
@@ -96,7 +96,7 @@ public class RedisDistributedLock {
                 return serializer.deserialize(data);
             });
         } catch (Exception e) {
-            log.error("get redis error,key:{}", key);
+            log.error("get redis error,key:{},error message:{}", key, e.getMessage());
         }
         return obj != null ? obj.toString() : null;
     }
@@ -105,15 +105,14 @@ public class RedisDistributedLock {
         Object obj = null;
         try {
             obj = redisTemplate.execute((RedisCallback) redisConnection -> {
-                FastJsonRedisSerializer serializer = new FastJsonRedisSerializer(String.class);
+                FastJsonRedisSerializer<String> serializer = new FastJsonRedisSerializer<>(String.class);
                 Boolean success = redisConnection.setNX(serializer.serialize(key), serializer.serialize(value));
                 redisConnection.close();
                 return success;
             });
 
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("setNX redis error, key : {}", key);
+            log.error("setNX redis error, key:{}, error message:{}", key, e.getMessage());
         }
         return obj != null ? (Boolean) obj : false;
     }
@@ -123,14 +122,14 @@ public class RedisDistributedLock {
         Object obj = null;
         try {
             obj = redisTemplate.execute((RedisCallback) redisConnection -> {
-                FastJsonRedisSerializer serializer = new FastJsonRedisSerializer(String.class);
+                FastJsonRedisSerializer<String> serializer = new FastJsonRedisSerializer<>(String.class);
                 byte[] data = redisConnection.getSet(serializer.serialize(key), serializer.serialize(value));
                 redisConnection.close();
                 return serializer.deserialize(data);
             });
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("getSet redis error, key : {}", key);
+            log.error("getSet redis error, key:{}, error message:{}", key, e.getMessage());
         }
         return obj != null ? (String) obj : null;
     }

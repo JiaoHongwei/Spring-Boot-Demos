@@ -1,0 +1,10 @@
+spring:
+  redis:
+    redisson:
+      config: classpath:redisson.yaml
+    database: 0
+    port: 6379
+    timeout: 0
+    sentinel:
+      master: master1
+      nodes: 127.0.0.1:6379,127.0.0.1:6380

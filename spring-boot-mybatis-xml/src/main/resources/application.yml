@@ -8,6 +8,6 @@ spring:
 
 
 mybatis:
-  config-location: classpath:mybatis-config.xml
+  config-location: classpath:mybatis-utils.xml
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.hw.springbootmybatisxml.entity

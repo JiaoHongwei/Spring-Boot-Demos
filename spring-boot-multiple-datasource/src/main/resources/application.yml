@@ -22,7 +22,7 @@ spring:
           physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       properties:
         hibernate:
-          dialect: com.hw.springbootmultipledatasource.config.SqlServer2008Dialect
+          dialect: com.hw.springbootmultipledatasource.utils.SqlServer2008Dialect
 
     secondary:
       show-sql: true
